@@ -132,7 +132,7 @@
 		};
 
 		function _css(css) {
-			dom.style.cssText += css;
+			dom.style.cssText += ";" + css;
 			return this;
 		};
 
@@ -160,7 +160,7 @@
 					posLeft = (windowSize[0] - boxSize[0]) / 2;
 					posTop = Math.max(((windowSize[1] - boxSize[1]) / 2 + scrollTop), 0);
 			}
-			dom.style.cssText += "position:absolute;z-index:" + domIdx + ";left:" + posLeft + "px; top:" + posTop + "px; width:" + boxSize[0] + "px; height:" + boxSize[1] + "px";
+			dom.style.cssText += "position:absolute;z-index:" + domIdx + ";left:" + posLeft + "px; top:" + posTop + "px; width:" + boxSize[0] + "px; height:" + boxSize[1] + "px;";
 			return this;
 		}
 

@@ -286,7 +286,9 @@
 			var myConfirm = Win.open(config);
 			var okBtn = $class('okBtn', myConfirm.dom), cancelBtn = $class('cancelBtn', myConfirm.dom);
 			events.addEvent(okBtn, 'click', ok);
-			events.addEvent(cancelBtn, 'click', cancel);
+			if(typeof(cancel) == 'function'){
+				events.addEvent(cancelBtn, 'click', cancel);
+			}
 			events.addEvent(okBtn, 'click', myConfirm.close);
 			events.addEvent(cancelBtn, 'click', myConfirm.close);
 			return myConfirm;

@@ -283,7 +283,7 @@
 					html : html
 				};
 			}
-			config.btns = '<div class="dialog_Btns"><b class="Btn BtnY"><a href="javascript:;">确定</a></b> <b class="Btn BtnN"><a href="javascript:;">取消</a></span></div>'
+			config.btns = '<div class="dialog_Btns"><b class="Btn BtnY"><a class="okBtn" href="javascript:;">确定</a></b> <b class="Btn BtnN"><a class="cancelBtn" href="javascript:;">取消</a></span></div>'
 			var myConfirm = Win.open(config);
 			var okBtn = $class('okBtn', myConfirm.dom), cancelBtn = $class('cancelBtn', myConfirm.dom);
 			events.addEvent(okBtn, 'click', ok);

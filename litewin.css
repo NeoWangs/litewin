@@ -5,7 +5,7 @@ html.locked,html.locked body{height:100%;overflow:hidden;}
 .dialog_Head{height:25px;line-height:25px;padding-left:10px;border:1px solid #648CBD;cursor:move;}
 .dialog_Head .dialog_Opts{position:absolute;right:14px;top:4px;height:15px;}
 .dialog_Head .dialog_close{display:block;width:29px;height:15px;}
-.dialog_Body{overflow:auto;border:1px solid #648CBD;border-top:0;}
+.dialog_Body{border:1px solid #648CBD;border-top:0;}
 .dialog_Iframe{overflow:hidden;}
 .dialog_Cont{word-wrap:break-word;padding:10px;}
 .dialog_Btns{text-align:center;}

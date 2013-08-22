@@ -32,7 +32,7 @@
 		addClass(dom, "myDialog");
 		var domHTML = '<div class="dialog_Wrap">';
 		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close">&#10005;</a></span></h3>';
-		domHTML += (config.html == undefined) ? '<div class="dialog_Body dialog_Iframe"><iframe class="dialog_iframe" src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
+		domHTML += (config.html == undefined) ? '<div class="dialog_Body"><iframe class="dialog_iframe" src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
 		domHTML += '</div>';
 		if(config.iframe) {
 			var iframeStr = '<iframe frameborder="no" class="converIframe" src="about:blank"></iframe>'
@@ -55,7 +55,8 @@
 		//firefox8之前不支持insertAdjacentHTML
 		(dom.insertAdjacentHTML) ? dom.insertAdjacentHTML('beforeEnd', domHTML) : dom.innerHTML = domHTML;
 		root.appendChild(dom);
-		dialogNum++; (function setting() {
+		dialogNum++; 
+		(function setting() {
 			/*
 			 *绑定一些方法,设置一些样式
 			 */
@@ -282,7 +283,7 @@
 					html : html
 				};
 			}
-			config.btns = '<div class="dialog_Btns"><span class="Button ButtonG"><a class="okBtn" href="javascript:;" onclick="return false;">确定</a></span> <span class="Button ButtonG"><a class="cancelBtn" href="javascript:;" onclick="return false;">取消</a></span></div>'
+			config.btns = '<div class="dialog_Btns"><b class="Btn BtnY"><a href="javascript:;">确定</a></b> <b class="Btn BtnN"><a href="javascript:;">取消</a></span></div>'
 			var myConfirm = Win.open(config);
 			var okBtn = $class('okBtn', myConfirm.dom), cancelBtn = $class('cancelBtn', myConfirm.dom);
 			events.addEvent(okBtn, 'click', ok);

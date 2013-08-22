@@ -1,33 +1,23 @@
 @charset "UTF-8";
 
 html.locked,html.locked body{height:100%;overflow:hidden;}
-.dialog_Wrap{background-color: #F2F5F7;
-  border: 1px solid #648CBD;
-	border-radius: 5px 5px 5px 5px;
-	box-shadow: 3px 3px 5px #CCCCCC;
-	overflow: hidden;}
-.dialog_Head{
-	background: #F2F5F7;
-	height:24px;
-	line-height:24px;
-	padding: 0 5px;
-	border-bottom:1px solid #648CBD;
-	cursor:move;
-}
-.dialog_Head .dialog_Opts{position:absolute;right:5px;top:0;height:24px;line-height:24px;}
-.dialog_Body{overflow:auto;}
+.dialog_Wrap{border:3px solid #A2BAD7;border-radius:4px;color:#3E6CB1;background-color:#fff;overflow: hidden;}
+.dialog_Head{height:25px;line-height:25px;padding-left:10px;border:1px solid #648CBD;cursor:move;}
+.dialog_Head .dialog_Opts{position:absolute;right:14px;top:4px;height:15px;}
+.dialog_Head .dialog_close{display:block;width:29px;height:15px;}
+.dialog_Body{overflow:auto;border:1px solid #648CBD;border-top:0;}
 .dialog_Iframe{overflow:hidden;}
 .dialog_Cont{word-wrap:break-word;padding:10px;}
-.dialog_Btns{padding:5px 10px;text-align:center;}
+.dialog_Btns{text-align:center;}
 .converIframe{position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;filter:Alpha(Opacity=0);opacity:0;}
 #masker{background:#000;filter:alpha(opacity=30);opacity:.3;}
 
-.Button,.Button a,.Button input,.Button button{display:inline-block;height:24px;line-height:24px;padding:0;margin:0;border:0;overflow:visible;vertical-align:middle;
-	background:#fff;
-	background:linear-gradient(top, #FEFEFE, #E0E0E2 );
-	background:-moz-linear-gradient(top, #FEFEFE, #E0E0E2 );
-	background:-webkit-gradient(linear, 50% 0, 50% 100%, from(#FEFEFE), to(#E0E0E2)); /* webkit老式写法 */
-	background:-webkit-linear-gradient(0, #FEFEFE, #E0E0E2 ); /* webkit新式写法 */
+.Btn a{display:inline-block;height:25px;line-height:25px;padding:0 8px;margin:0;border:0;vertical-align:middle;overflow:visible;
+	border-radius:4px;
+	box-shadow: 0 -1px 0 #ccc;
 }
-.Button{padding-left:5px;zoom:1;overflow:hidden;}
-.Button a,.Button input,.Button button{float:left;padding:0 8px 0 3px;cursor:pointer;}
+.BtnY a{background-color: #006DCC;color: #fff;}
+.BtnN a{background-color: #E6E6E6;color: #333;}
+ 
+
+

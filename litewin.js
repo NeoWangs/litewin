@@ -90,9 +90,11 @@
 				return false;
 			var e = arguments[0] || window.event;
 			var tX = dom.offsetLeft, tY = dom.offsetTop, dx = e.clientX, dy = e.clientY;
+			addClass(root, "draging");
 			events.addEvent(document, 'mousemove', dragHandle);
 			events.addEvent(document, 'mouseup', function() {
 				events.removeEvent(document, 'mousemove', dragHandle);
+				removeClass(root, "draging");
 			});
 			function dragHandle() {
 				var e = arguments[0] || window.event;
@@ -102,8 +104,10 @@
 		}
 
 		function _close() {
-			if(config.onclose)
-				config.onclose();
+			if(config.beforeClose){
+				var _continue = config.beforeClose();
+				if(_continue == false) return;
+ 			}
 			if(dom) {
 				root.removeChild(dom);
 				//删除Win中记录的dialog对象
@@ -219,6 +223,13 @@
 			/*
 			 *	带自动排列功能
 			 */
+			if( typeof (config) != "object") {
+				var html = config;
+				config = {
+					html : html
+				};
+			};
+
 			/* webkit直接用Notifications API.  */
 			if(window.webkitNotifications && config.html) {
 				var icon = "";
@@ -233,8 +244,8 @@
 							event.currentTarget.cancel();
 						}, t);
 					}
-					popup.onclose = function(event) {
-						config.onclose();
+					popup.beforeClose = function(event) {
+						config.beforeClose();
 					}
 					popup.show();
 				} else {
@@ -257,15 +268,15 @@
 			})();
 
 			var moreConfig = {
-				onclose : config.onclose || null
+				beforeClose : config.beforeClose || null
 			};
-			config.onclose = function() {
+			config.beforeClose = function() {
 				tipArr[idx] = 0;
 				if(tipArr[tipArr.length - 1] == 0)
 					tipArr.pop();
 				//发现tipArr最后一项为0，则Pop
-				if(moreConfig.onclose)
-					moreConfig.onclose();
+				if(moreConfig.beforeClose)
+					moreConfig.beforeClose();
 			};
 			config.drag = false;
 			var myTip = Win.alert(config, time).position("rightBottom");

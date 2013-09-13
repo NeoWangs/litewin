@@ -15,7 +15,7 @@
 Win.open({
  	'id' : '',
  	'title':'Title:Win.open()',
- 	'url' : 'http://www.baidu.com',
+ 	'url' : 'http://www.cssass.com',
  	'width' : 600,
  	'height' : 300,
  	'onclose' : function(){
@@ -32,18 +32,21 @@ Win.confirm({
 },function(){alert("确定")},function(){alert("取消")})
 //提示窗
 Win.notice({
-	'html' : 'Win.notice(1)'
+	'html' : '0'
 });
+setTimeout(function(){
+	Win.notice('1');
+},1000);
 
 setTimeout(function(){
-	Win.notice({
-		'html' : 'Win.notice(2)'
-	});
-},2000);
+	Win.notice('2');
+},2000)
 
 setTimeout(function(){
-	Win.notice({
-		'html' : 'Win.notice(2)'
-	});
-},4000)
+	Win.notice('3');
+},3200)
+
+setTimeout(function(){
+	Win.notice('4');
+},4300)
 </script>

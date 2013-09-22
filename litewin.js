@@ -60,13 +60,16 @@
 			/*
 			 *绑定一些方法,设置一些样式
 			 */
-			var closeBtn = $class("dialog_close",dom)[0], dialogHead = $class("dialog_Head",dom)[0];
+			var closeBtn = $class("dialog_close",dom)[0], 
+				dialogHead = $class("dialog_Head",dom)[0];
 			if(config.height) {
 				// 有高度设置
 				var dialogBody = $class("dialog_Body",dom)[0], dialogIframe = $class("dialog_iframe", dom);
 				var bodyHeight = config.height - dialogHead.offsetHeight;
 				dialogBody.style.height = bodyHeight + "px";
 			}
+			dom.style.width = (config.width || "200") + "px";
+			dom.style.height = (config.height || dom.offsetHeight) + "px";
 			if(config.locked) {
 				lockedNum++;
 				addClass(document.documentElement, 'locked');
@@ -142,7 +145,11 @@
 		};
 
 		function _pos(align) {
-			var windowSize = [document.documentElement.offsetWidth, document.documentElement.clientHeight], boxSize = [(config.width || 200), config.height || dom.offsetHeight], scrollTop = root.scrollTop || document.documentElement.scrollTop, posLeft = null, posTop = null;
+			var windowSize = [document.documentElement.offsetWidth, document.documentElement.clientHeight], 
+				boxSize = [dom.offsetWidth, dom.offsetHeight], 
+				scrollTop = root.scrollTop || document.documentElement.scrollTop, 
+				posLeft = null, 
+				posTop = null;
 			switch(align) {
 				case 'leftTop':
 					posLeft = 0;
@@ -165,7 +172,7 @@
 					posLeft = (windowSize[0] - boxSize[0]) / 2;
 					posTop = Math.max(((windowSize[1] - boxSize[1]) / 2 + scrollTop), 0);
 			}
-			dom.style.cssText += "position:absolute;z-index:" + domIdx + ";left:" + posLeft + "px; top:" + posTop + "px; width:" + boxSize[0] + "px; height:" + boxSize[1] + "px;";
+			dom.style.cssText += "position:absolute;z-index:" + domIdx + ";left:" + posLeft + "px; top:" + posTop + "px; ";
 			return this;
 		}
 

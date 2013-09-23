@@ -19,6 +19,7 @@
 			btns : '',
 			mask : false,
 			drag : true,
+			bound : true,	
 			locked : false
 		}
 		extendCopy(cfg || {}, config);
@@ -106,17 +107,17 @@
 			});
 			function dragHandle() {
 				var e = arguments[0] || window.event;
-
 				var oX = tX + (e.clientX - dx),
 					oY = tY + (e.clientY - dy);
-				(function(){
+				 if(config.bound){
+					//限制边界
 					if(oX > largeL || oX < 0){
 						oX = (oX < 0) ? 0 : largeL
 					}
 					if(oY > largeT || oY < 0){
 						oY = (oY < 0) ? 0 : largeT
 					}
-				})();
+				 }
 				dom.style.left = oX + "px";
 				dom.style.top = oY + "px";
 			};

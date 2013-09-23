@@ -92,7 +92,12 @@
 			if(!config.drag)
 				return false;
 			var e = arguments[0] || window.event;
-			var tX = dom.offsetLeft, tY = dom.offsetTop, dx = e.clientX, dy = e.clientY;
+			var tX = dom.offsetLeft, 
+				tY = dom.offsetTop, 
+				dx = e.clientX, 
+				dy = e.clientY,
+				largeL = document.documentElement.offsetWidth -  dom.offsetWidth,
+				largeT = Math.max(document.documentElement.clientHeight,document.body.offsetHeight) - dom.offsetHeight;
 			addClass(root, "draging");
 			events.addEvent(document, 'mousemove', dragHandle);
 			events.addEvent(document, 'mouseup', function() {
@@ -101,8 +106,19 @@
 			});
 			function dragHandle() {
 				var e = arguments[0] || window.event;
-				dom.style.left = tX + (e.clientX - dx) + "px";
-				dom.style.top = tY + (e.clientY - dy) + "px";
+
+				var oX = tX + (e.clientX - dx),
+					oY = tY + (e.clientY - dy);
+				(function(){
+					if(oX > largeL || oX < 0){
+						oX = (oX < 0) ? 0 : largeL
+					}
+					if(oY > largeT || oY < 0){
+						oY = (oY < 0) ? 0 : largeT
+					}
+				})();
+				dom.style.left = oX + "px";
+				dom.style.top = oY + "px";
 			};
 		}
 
@@ -172,7 +188,7 @@
 					posLeft = (windowSize[0] - boxSize[0]) / 2;
 					posTop = Math.max(((windowSize[1] - boxSize[1]) / 2 + scrollTop), 0);
 			}
-			dom.style.cssText += "position:absolute;z-index:" + domIdx + ";left:" + posLeft + "px; top:" + posTop + "px; ";
+			dom.style.cssText += ";position:absolute;z-index:" + domIdx + ";left:" + posLeft + "px; top:" + posTop + "px; ";
 			return this;
 		}
 

@@ -33,7 +33,7 @@
 		addClass(dom, "myDialog");
 		var domHTML = '<div class="dialog_Wrap">';
 		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close">&#10005;</a></span></h3>';
-		domHTML += (config.html == undefined) ? '<div class="dialog_Body"><iframe class="dialog_iframe" src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
+		domHTML += (config.html == undefined) ? '<div class="dialog_Body dialog_Iframe"><iframe src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
 		domHTML += '</div>';
 		if(config.iframe) {
 			var iframeStr = '<iframe frameborder="no" class="converIframe" src="about:blank"></iframe>'
@@ -65,12 +65,16 @@
 				dialogHead = $class("dialog_Head",dom)[0];
 			if(config.height) {
 				// 有高度设置
-				var dialogBody = $class("dialog_Body",dom)[0], dialogIframe = $class("dialog_iframe", dom);
+				var dialogBody = $class("dialog_Body",dom)[0];
 				var bodyHeight = config.height - dialogHead.offsetHeight;
 				dialogBody.style.height = bodyHeight + "px";
 			}
 			dom.style.width = (config.width || "200") + "px";
-			dom.style.height = (config.height || dom.offsetHeight) + "px";
+			if(config.height){
+				dom.style.height = config.height+ "px";
+			}else{
+				if(UA.isIE6) dom.style.height = dom.offsetHeight + "px"; //ie6需固定下高度，否则iframe垫层尺寸不准。
+			}
 			if(config.locked) {
 				lockedNum++;
 				addClass(document.documentElement, 'locked');

@@ -276,10 +276,10 @@
 						config.beforeClose();
 					}
 					popup.show();
+					return;
 				} else {
 					window.webkitNotifications.requestPermission();
 				}
-				return;
 			}
 			/*
 			 * 计算位置。tipArr保存的是每一个tip窗口，距离页面上方应该有的top值。

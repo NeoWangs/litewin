@@ -21,7 +21,7 @@
 			drag : true,
 			bound : true,	
 			locked : false
-		}
+		};
 		extendCopy(cfg || {}, config);
 		//对象拷贝继承
 		/*
@@ -33,10 +33,10 @@
 		addClass(dom, "myDialog");
 		var domHTML = '<div class="dialog_Wrap">';
 		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close">&#10005;</a></span></h3>';
-		domHTML += (config.html == undefined) ? '<div class="dialog_Body dialog_Iframe"><iframe src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
+		domHTML += (config.html == undefined) ? '<div class="dialog_Body"><iframe class="dialog_iframe" src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
 		domHTML += '</div>';
 		if(config.iframe) {
-			var iframeStr = '<iframe frameborder="no" class="converIframe" src="about:blank"></iframe>'
+			var iframeStr = '<iframe frameborder="no" class="converIframe" src="about:blank"></iframe>';
 			domHTML += iframeStr;
 		}
 		if(config.mask) {
@@ -65,16 +65,12 @@
 				dialogHead = $class("dialog_Head",dom)[0];
 			if(config.height) {
 				// 有高度设置
-				var dialogBody = $class("dialog_Body",dom)[0];
+				var dialogBody = $class("dialog_Body",dom)[0], dialogIframe = $class("dialog_iframe", dom);
 				var bodyHeight = config.height - dialogHead.offsetHeight;
 				dialogBody.style.height = bodyHeight + "px";
 			}
 			dom.style.width = (config.width || "200") + "px";
-			if(config.height){
-				dom.style.height = config.height+ "px";
-			}else{
-				if(UA.isIE6) dom.style.height = dom.offsetHeight + "px"; //ie6需固定下高度，否则iframe垫层尺寸不准。
-			}
+			dom.style.height = (config.height || dom.offsetHeight) + "px";
 			if(config.locked) {
 				lockedNum++;
 				addClass(document.documentElement, 'locked');
@@ -116,10 +112,10 @@
 				 if(config.bound){
 					//限制边界
 					if(oX > largeL || oX < 0){
-						oX = (oX < 0) ? 0 : largeL
+						oX = (oX < 0) ? 0 : largeL;
 					}
 					if(oY > largeT || oY < 0){
-						oY = (oY < 0) ? 0 : largeT
+						oY = (oY < 0) ? 0 : largeT;
 					}
 				 }
 				dom.style.left = oX + "px";
@@ -206,7 +202,7 @@
 			'position' : _pos,
 			'css' : _css,
 			'close' : _close
-		}
+		};
 	};
 
 	var Win = {
@@ -271,10 +267,10 @@
 						setTimeout(function() {
 							event.currentTarget.cancel();
 						}, t);
-					}
+					};
 					popup.beforeClose = function(event) {
 						config.beforeClose();
-					}
+					};
 					popup.show();
 					return;
 				} else {
@@ -322,8 +318,7 @@
 					html : html
 				};
 			}
-			config.btns = '<div class="dialog_Btns"><b class="Btn BtnY"><a class="okBtn" href="javascript:;">确定</a></b> ';
-			config.btns += (cancel) ? '<b class="Btn BtnN"><a class="cancelBtn" href="javascript:;">取消</a></span></div>' : '</div>';
+			config.btns = '<div class="dialog_Btns"><b class="Btn BtnY"><a class="okBtn" href="javascript:;">确定</a></b> <b class="Btn BtnN"><a class="cancelBtn" href="javascript:;">取消</a></span></div>';
 			var myConfirm = Win.open(config);
 			var okBtn = $class('okBtn', myConfirm.dom), cancelBtn = $class('cancelBtn', myConfirm.dom);
 			events.addEvent(okBtn, 'click', ok);
@@ -334,6 +329,6 @@
 			events.addEvent(cancelBtn, 'click', myConfirm.close);
 			return myConfirm;
 		}
-	}
+	};
 	window.Win = Win;
-})()
+})();

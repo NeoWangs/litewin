@@ -14,8 +14,8 @@
 	//用于tip方法记录位置
 	function showDialog(cfg) {
 		var config = {//默认值设置。
-			title : "提示消息",
-			iframe : true,
+			title : "提示",
+			iframe : false,
 			btns : '',
 			mask : false,
 			drag : true,
@@ -32,8 +32,10 @@
 		dom.id = config.id || 'dialog' + (Math.random() * 1986 >> 0);
 		addClass(dom, "myDialog");
 		var domHTML = '<div class="dialog_Wrap">';
-		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close">&#10005;</a></span></h3>';
-		domHTML += (config.html == undefined) ? '<div class="dialog_Body"><iframe class="dialog_iframe" src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : '<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
+		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close" onclick="return false;"> </a></span></h3>';
+		domHTML += (config.html == undefined) ? 
+			'<div class="dialog_Body dialog_Iframe"><iframe domid='+dom.id+' src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' : 
+			'<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
 		domHTML += '</div>';
 		if(config.iframe) {
 			var iframeStr = '<iframe frameborder="no" class="converIframe" src="about:blank"></iframe>';
@@ -55,8 +57,9 @@
 		}
 		//firefox8之前不支持insertAdjacentHTML
 		(dom.insertAdjacentHTML) ? dom.insertAdjacentHTML('beforeEnd', domHTML) : dom.innerHTML = domHTML;
-		root.appendChild(dom);
-		dialogNum++; 
+		 dom.style.cssText += ";position:absolute;left:0;top:0; ";
+         root.appendChild(dom);   
+		 dialogNum++; 
 		(function setting() {
 			/*
 			 *绑定一些方法,设置一些样式
@@ -65,12 +68,16 @@
 				dialogHead = $class("dialog_Head",dom)[0];
 			if(config.height) {
 				// 有高度设置
-				var dialogBody = $class("dialog_Body",dom)[0], dialogIframe = $class("dialog_iframe", dom);
+				var dialogBody = $class("dialog_Body",dom)[0];
 				var bodyHeight = config.height - dialogHead.offsetHeight;
 				dialogBody.style.height = bodyHeight + "px";
 			}
-			dom.style.width = (config.width || "200") + "px";
-			dom.style.height = (config.height || dom.offsetHeight) + "px";
+			dom.style.width = (config.width || "240") + "px";
+			if(config.height){
+				dom.style.height = config.height+ "px";
+			}else{
+				if(UA.isIE6) dom.style.height = dom.offsetHeight + "px"; //ie6需固定下高度，否则iframe垫层尺寸不准。
+			}
 			if(config.locked) {
 				lockedNum++;
 				addClass(document.documentElement, 'locked');
@@ -100,11 +107,28 @@
 				largeL = document.documentElement.offsetWidth -  dom.offsetWidth,
 				largeT = Math.max(document.documentElement.clientHeight,document.body.offsetHeight) - dom.offsetHeight;
 			addClass(root, "draging");
+			var target = e.target || e.srcElement;
+			if(target.setCapture) {
+				(UA.isIE) ? document.body.setCapture() : target.setCapture();
+			}
 			events.addEvent(document, 'mousemove', dragHandle);
 			events.addEvent(document, 'mouseup', function() {
+				var e = arguments[0] || window.event;
+				var target = e.target || e.srcElement;
+				if(target.setCapture) {
+					(UA.isIE) ? document.body.releaseCapture() : target.releaseCapture();
+				}
 				events.removeEvent(document, 'mousemove', dragHandle);
 				removeClass(root, "draging");
 			});
+			// 清除文本选择
+			var clsSelect = 'getSelection' in window ? function () {
+				window.getSelection().removeAllRanges();
+			} : function () {
+				try {
+					document.selection.empty();
+				} catch (e) {};
+			};
 			function dragHandle() {
 				var e = arguments[0] || window.event;
 				var oX = tX + (e.clientX - dx),
@@ -120,6 +144,7 @@
 				 }
 				dom.style.left = oX + "px";
 				dom.style.top = oY + "px";
+				clsSelect();
 			};
 		}
 
@@ -129,6 +154,7 @@
 				if(_continue == false) return;
  			}
 			if(dom) {
+				dom.innerHTML="";
 				root.removeChild(dom);
 				//删除Win中记录的dialog对象
 				delete Win.wins[dom.id]; 
@@ -153,6 +179,8 @@
 					}
 				}
 			};
+			if(config.afterClose)
+				config.afterClose();
 			return false;
 		};
 
@@ -231,7 +259,7 @@
 				var html = config;
 				config = {
 					id : "dialogAlert",
-					html : html
+					html : '<span class="dialog_Inner">' + html + '</span>'
 				};
 			};
 			var myAlert = Win.open(config);
@@ -315,15 +343,18 @@
 				var html = config;
 				config = {
 					title : "确认消息",
-					html : html
+					html : '<span class="dialog_Inner">' + html + '</span>'
 				};
 			}
-			config.btns = '<div class="dialog_Btns"><b class="Btn BtnY"><a class="okBtn" href="javascript:;">确定</a></b> <b class="Btn BtnN"><a class="cancelBtn" href="javascript:;">取消</a></span></div>';
+			config.btns = '<div class="dialog_Btns"><a class="okBtn mr20" href="javascript:;" onclick="return false;"><span>确定</span></a>';
+			if(cancel) config.btns += '<a class="cancelBtn" href="javascript:;" onclick="return false;"><span>取消</span></a>';
+			config.btns += '</div>';
 			var myConfirm = Win.open(config);
-			var okBtn = $class('okBtn', myConfirm.dom), cancelBtn = $class('cancelBtn', myConfirm.dom);
+			var okBtn = $class('okBtn', myConfirm.dom), cancelBtn = $class('cancelBtn', myConfirm.dom), dialog_close = $class('dialog_close', myConfirm.dom);
 			events.addEvent(okBtn, 'click', ok);
 			if(typeof(cancel) == 'function'){
 				events.addEvent(cancelBtn, 'click', cancel);
+				events.addEvent(dialog_close, 'click', cancel);
 			}
 			events.addEvent(okBtn, 'click', myConfirm.close);
 			events.addEvent(cancelBtn, 'click', myConfirm.close);

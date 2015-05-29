@@ -1,52 +1,79 @@
 <!doctype html>
 <meta charset="UTF-8" />
 <title>简易弹窗</title>
-<meta name="Author" contect="ONEBOYS">
+<meta name="Author" contect="Neoxone">
 <meta name="Site" contect="http://www.cssass.com">
 <link type="text/css" rel="stylesheet" href="http://www.cssass.com/public/css/reset.css" />
 <script type="text/javascript" src="http://www.cssass.com/public/js/extend.js"></script>
-<link href="litewin.css" rel="stylesheet" type="text/css" >
-<script src="litewin.js"></script>
+<script src="http://www.cssass.com/public/js/litewin.js"></script>
+<style>
+    body{padding:20px;}
+    ol li{list-style:decimal}
+    pre{background:#ccc;}
+</style>
 <body>
-  <a href="#" onclick="Win.open({html:'遮罩', mask:true,locked:true});">open</a>
+<ol>
+   <li>Win.open：Win.open是liteWin中最基层的对外方法，其它对外方法都基于此方法。一般调用:
+       <pre>Win.open("Hello!");</pre>
+        <a href="javascript:;" onclick='Win.open("Hello! "+random());'>click test</a><br /><br />
+        上面的demo如果反复点击,就会发现不断弹出框，所以可以加上id，同时将传递的参数改成对象：
+        <pre>Win.open({id:"once",html:"Hello! just this time!"});</pre><a href="javascript:;" onclick='Win.open({id:"once",html:"Hello! just this time!"});'>只弹一个</a><br /><br />
+        使用url替换html参数，可以弹iframe页面
+        <pre>Win.open({id:"openPage",url:"http://www.baidu.com"});</pre>
+        <a href="javascript:;" onclick='Win.open({id:"openPage",url:"http://www.baidu.com"});'>打开百度</a><br /><br />
+        指定title，width，height参数：
+        <pre>Win.open({id:"openPage",url:"http://www.baidu.com",title:"打开百度",width:600,height:400});</pre>
+        <a href="javascript:;" onclick='Win.open({id:"openPage",url:"http://www.baidu.com",title:"打开百度",width:600,height:400});'>click test</a><br /><br />
+        遮罩层(mask) & 滚动条锁定(locked):
+        <pre>Win.open({html:'打开遮罩；锁定滚动条', mask:true, locked:true});</pre>
+        <a href="javascript:;" onclick='Win.open({html:"打开遮罩；锁定滚动条", mask:true, locked:true});'>click test</a><br /><br />
+        边界限定(bound) & iframe底垫(iframe):
+       <pre>Win.open({html:'边界限定,无法拖出页面范围(默认开启); iframe底垫(默认关闭)，有时候弹窗无法遮盖某些元素，比如flash，插件时候使用', bound:false, iframe:true});</pre>
+       <a href="javascript:;" onclick='Win.open({html:"边界限定,无法拖出页面范围(默认开启); iframe底垫(默认关闭)，有时候弹窗无法遮盖某些元素，比如flash，插件时候使用", bound:false, iframe:true});'>click test</a><br /><br />
+       弹窗关闭前/后回调方法
+       <pre>Win.open({html:'点击右上角关闭按钮', beforeClose:function(){alert('before close')}, afterClose:function(){alert('after close')}});</pre>
+       <a href="javascript:;" onclick="Win.open({html:'点击右上角关闭按钮', beforeClose:function(){alert('before close')}, afterClose:function(){alert('after close')}});">click test</a><br /><br />
+   </li>
+    <li>
+        Win.alert：在Win.open基础上增加了自动关闭，默认关闭时间3s
+        <pre>Win.alert("Warning!");</pre>
+        <a href="javascript:;" onclick='Win.alert("Warning!");'>click test</a><br /><br />
+        设置关闭时间为1000ms
+        <pre>Win.alert("Warning!",1000);</pre>
+        <a href="javascript:;" onclick='Win.alert("Warning!",1000);'>click test</a><br /><br />
+        设置复杂参数(同Win.open)
+        <pre>Win.alert({id:"specialAlert",html:"自定义Win.alert",title:"Special Alert",width:300,height:200},1000);</pre>
+        <a href="javascript:;" onclick='Win.alert({id:"specialAlert",html:"自定义Win.alert",title:"Special Alert",width:300,height:200},1000);'>click test</a><br /><br />
+    </li>
+    <li>
+        Win.notice：Win.open基础上的消息提示，有自动排序效果
+        <pre>Win.notice("notice: "+random());</pre>
+        <a href="javascript:;" onclick='Win.notice("notice: "+random());'>click test</a><br /><br />
+        设置复杂参数(同Win.open)<br /><br />
+    </li>
+    <li>
+        Win.confirm: 消息确认框
+        <pre>Win.confirm("Are you sure?");</pre>
+        <a href="javascript:;" onclick='Win.confirm("Are you sure?");'>click test</a><br /><br />
+        绑定方法
+        <pre>Win.confirm("Are you sure?",function(){alert("Yes!")});</pre>
+        <a href="javascript:;" onclick='Win.confirm("Are you sure?",function(){alert("Yes!")});'>click test</a><br /><br />
+        绑定方法，并根据返回值(false)阻止弹窗关闭
+        <pre>Win.confirm("Are you sure?",function(){alert("error!");return false;});</pre>
+        <a href="javascript:;" onclick='Win.confirm("Are you sure?",function(){alert("error!");return false;});'>click test</a><br /><br />
+        添加取消按钮并绑定事件
+        <pre>Win.confirm("Are you sure?",function(){alert("Yes!")},function(){alert("NO!")});</pre>
+        <a href="javascript:;" onclick='Win.confirm("Are you sure?",function(){alert("Yes!")},function(){alert("NO!")});'>click test</a><br /><br />
+        设置复杂参数(同Win.open)<br /><br />
+    </li>
+    <li>
+        一些特殊用法：<br />
+        设置弹窗位置：
+        <pre>Win.open("set position").position("leftBottom"); //参数有:leftTop;leftBottom;rightTop;rightBottom</pre>
+        <a href="javascript:;" onclick='Win.open("set position").position("leftBottom");'>click test</a><br /><br />
+        设置主体DOM的CSS样式:
+        <pre>Win.open("set style").css("border:5px solid #faa;"); </pre>
+        <a href="javascript:;" onclick='Win.open("set style").css("border:5px solid #faa;");'>click test</a><br /><br />
+    </li>
+</ol>
 </body>
-<script>
-//常规弹窗
-Win.open({
- 	'id' : '',
- 	'title':'Title:Win.open()',
- 	'url' : 'http://www.cssass.com',
- 	'width' : 600,
- 	'height' : 300,
- 	'onclose' : function(){
- 		alert("关闭");
- 	}
-});
-//3s自动关闭
-Win.alert({
-	html:"Win.alert()"
-}) 
-//确认弹窗
-Win.confirm({
-	html : "Win.confirm()"
-},function(){alert("确定")},function(){alert("取消")})
-//提示窗
-Win.notice({
-	'html' : '0'
-});
-setTimeout(function(){
-	Win.notice('1');
-},1000);
-
-setTimeout(function(){
-	Win.notice('2');
-},2000)
-
-setTimeout(function(){
-	Win.notice('3');
-},3200)
-
-setTimeout(function(){
-	Win.notice('4');
-},4300)
-</script>

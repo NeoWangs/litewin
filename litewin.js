@@ -343,10 +343,11 @@
 					moreConfig.beforeClose();
 			};
 			config.drag = false;
+			config.id = 'dialog' + (Math.random() * 1986 >> 0);
 			var myTip = Win.alert(config, time).position("rightBottom");
 			var tipHeight = myTip.dom.offsetHeight + 10;
 			tipArr[idx] = tipHeight;
-			myTip.css("top:" + (document.documentElement.clientHeight - toalHeight - tipHeight) + "px;");
+			myTip.css("top:" + (document.documentElement.clientHeight + (document.body.scrollTop || document.documentElement.scrollTop) - toalHeight - tipHeight) + "px;");
 			return myTip;
 		},
 		confirm: function(config, ok, cancel) {

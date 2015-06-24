@@ -33,7 +33,7 @@
 		dom.id = config.id || 'dialog' + (Math.random() * 1986 >> 0);
 		addClass(dom, "myDialog");
 		var domHTML = '<div class="dialog_Wrap">';
-		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close" onclick="return false;"> </a></span></h3>';
+		domHTML += '<h3 class="dialog_Head"><b>' + config.title + '</b><span class="dialog_Opts"><a href="javascript:;" class="dialog_close" onclick="return false;">×</a></span></h3>';
 		domHTML += (config.html == undefined) ?
 			'<div class="dialog_Body dialog_Iframe"><iframe domid=' + dom.id + ' src="' + config.url + '" allowTransparency=true frameborder=no border=0  width=100% height=100% ></iframe></div>' :
 			'<div class="dialog_Body"><div class="dialog_Cont">' + config.html + config.btns + '</div></div>';
@@ -361,8 +361,8 @@
 					html: '<span class="dialog_Inner">' + html + '</span>'
 				};
 			}
-			config.btns = '<div class="dialog_Btns"><a class="okBtn mr20" href="javascript:;" onclick="return false;">确定</a>';
-			if (cancel) config.btns += '<a class="cancelBtn" href="javascript:;" onclick="return false;">取消</a>';
+			config.btns = '<div class="dialog_Btns"><a class="okBtn" href="javascript:;" onclick="return false;">确定</a>';
+			if (cancel) config.btns += '<a class="cancelBtn ml20" href="javascript:;" onclick="return false;">取消</a>';
 			config.btns += '</div>';
 			var myConfirm = Win.open(config);
 			var okBtn = $class('okBtn', myConfirm.dom),

@@ -68,6 +68,7 @@
 			/*
 			 *绑定一些方法,设置一些样式
 			 */
+			if(config.container && getStyle(container,"position") == "static") container.style.position = "relative";
 			var closeBtn = $class("dialog_close", dom)[0],
 				dialogHead = $class("dialog_Head", dom)[0];
 			if (config.height) {

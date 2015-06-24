@@ -28,6 +28,7 @@
 		 * 创建DOM结构
 		 */
 		var root = document.body;
+		var container = config.container || root;
 		var dom = document.createElement("DIV");
 		dom.id = config.id || 'dialog' + (Math.random() * 1986 >> 0);
 		addClass(dom, "myDialog");
@@ -59,7 +60,7 @@
 		//firefox8之前不支持insertAdjacentHTML
 		(dom.insertAdjacentHTML) ? dom.insertAdjacentHTML('beforeEnd', domHTML): dom.innerHTML = domHTML;
 		dom.style.cssText += ";position:absolute;left:0;top:0; ";
-		root.appendChild(dom);
+		container.appendChild(dom);
 		dialogNum++;
 
 
@@ -111,8 +112,8 @@
 				tY = dom.offsetTop,
 				dx = e.clientX,
 				dy = e.clientY,
-				largeL = document.documentElement.offsetWidth - dom.offsetWidth,
-				largeT = Math.max(document.documentElement.clientHeight, document.body.offsetHeight) - dom.offsetHeight;
+				maxX = (config.container ? config.container.offsetWidth : document.documentElement.offsetWidth) - dom.offsetWidth,
+				maxY = (config.container ? config.container.offsetHeight : Math.max(document.documentElement.clientHeight, document.body.offsetHeight)) - dom.offsetHeight;
 			addClass(root, "draging");
 			var target = e.target || e.srcElement;
 			if (target.setCapture) {
@@ -143,11 +144,11 @@
 					oY = tY + (e.clientY - dy);
 				if (config.bound) {
 					//限制边界
-					if (oX > largeL || oX < 0) {
-						oX = (oX < 0) ? 0 : largeL;
+					if (oX > maxX || oX < 0) {
+						oX = (oX < 0) ? 0 : maxX;
 					}
-					if (oY > largeT || oY < 0) {
-						oY = (oY < 0) ? 0 : largeT;
+					if (oY > maxY || oY < 0) {
+						oY = (oY < 0) ? 0 : maxY;
 					}
 				}
 				dom.style.left = oX + "px";
@@ -163,7 +164,7 @@
 			}
 			if (dom) {
 				dom.innerHTML = "";
-				root.removeChild(dom);
+				container.removeChild(dom);
 				//删除Win中记录的dialog对象
 				delete Win.wins[dom.id];
 				dom = null;
@@ -198,9 +199,9 @@
 		};
 
 		function _pos(align) {
-			var windowSize = [document.documentElement.offsetWidth, document.documentElement.clientHeight],
+			var windowSize = (config.container) ? [config.container.offsetWidth, config.container.offsetHeight] : [document.documentElement.offsetWidth, document.documentElement.clientHeight],
 				boxSize = [dom.offsetWidth, dom.offsetHeight],
-				scrollTop = root.scrollTop || document.documentElement.scrollTop,
+				scrollTop = (config.container) ? container.scrollTop : (container.scrollTop || document.documentElement.scrollTop),
 				posLeft = null,
 				posTop = null;
 			switch (align) {
@@ -209,16 +210,16 @@
 					posTop = 0;
 					break;
 				case 'rightTop':
-					posLeft = windowSize[0] - boxSize[0] - 10;
+					posLeft = windowSize[0] - boxSize[0] - 5;
 					posTop = 0;
 					break;
 				case 'leftBottom':
 					posLeft = 0;
-					posTop = windowSize[1] - boxSize[1] + scrollTop - 10;
+					posTop = windowSize[1] - boxSize[1] + scrollTop - 5;
 					break;
 				case 'rightBottom':
-					posLeft = windowSize[0] - boxSize[0] - 10;
-					posTop = windowSize[1] - boxSize[1] + scrollTop - 10;
+					posLeft = windowSize[0] - boxSize[0] - 5;
+					posTop = windowSize[1] - boxSize[1] + scrollTop - 5;
 					break;
 				case 'center':
 				default:
